@@ -34,6 +34,8 @@ class RadarGraph extends Component {
             // support styling partial labels (such as making main label bold with normal sublabels)
             // if the design decision is to forego the bolding to trade for flexibility
             // please refer to commit 379712b1b5c084f1dece6cc2acb8768f5ee30680
+
+            //calculates coordinates for where labels should be
             let xadd = 5 + radius * Math.cos((i + 3.5) * angle);
             let yadd = 20 + radius * Math.sin((i + 3.5) * angle);
 
@@ -49,8 +51,10 @@ class RadarGraph extends Component {
 
             ctx.font = "14px Arial";
             ctx.fillStyle = "#333333";
-
+            //title label in bold
             ctx.fillText(TITLES[i - 1], xCenter + xadd, yCenter + yadd);
+
+            //draws each of the sub-label lines
             ctx.font = "12px Arial";
             ctx.fillStyle = "#999999";
             const descriptLines = this.formatNewlines(DESCRIPTIONS[i - 1]);
@@ -63,6 +67,7 @@ class RadarGraph extends Component {
           ctx.closePath();
           ctx.fillStyle = config.options.chartArea.backgroundColor;
           ctx.fill();
+          //restores all previous canvas settings to not effect chart drawings
           ctx.restore();
         }
       },
