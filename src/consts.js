@@ -18,6 +18,6 @@ export const DESCRIPTIONS = [
 
 export const TEXT_COLOR = {
   Average: "rgba(231,83,82)",
-  Good: "rgb(225,170,77)",
-  Excellent: "rgb(64,184,132)",
+  Good: "rgba(225,170,77)",
+  Excellent: "rgba(64,184,132)",
 };

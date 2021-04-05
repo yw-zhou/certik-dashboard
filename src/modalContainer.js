@@ -8,22 +8,28 @@ import GuageCard from "./guageCard";
 import { TITLES } from "./consts";
 import logo from "./dyp-logo.png";
 import "./modalContainer.css";
+import registerChartPlugin from "./customChartPlugin";
 
 function ModalContainer() {
   //react hook to support resizing changes
   let windowSize = useWindowSize();
-
-  //typically would be requesting for data here
-  const data = {
-    primitives: [
-      { name: "static-analysis", issues: 41, checks: 400, score: 80 },
-      { name: "onchain-monitoring", issues: 0, checks: 9, score: 60 },
-      { name: "social-sentiment", issues: 6, checks: 6, score: 80 },
-      { name: "governance-autonomy", issues: 1, checks: 0, score: 100 },
-      { name: "market-volatility", issues: 0, checks: 6, score: 98 },
-      { name: "safety-assessment", issues: 12, checks: 96, score: 98 },
-    ],
-  };
+  registerChartPlugin();
+  const [data, setData] = useState({ primitives: [] });
+  useEffect(() => {
+    // typically would be requesting for data here using axios, however since
+    // the endpoint given in the challenge doesn't allow origin (causing CORS)
+    // I've manually wrote the data below
+    setData({
+      primitives: [
+        { name: "static-analysis", issues: 41, checks: 400, score: 80 },
+        { name: "onchain-monitoring", issues: 0, checks: 9, score: 60 },
+        { name: "social-sentiment", issues: 6, checks: 6, score: 80 },
+        { name: "governance-autonomy", issues: 1, checks: 0, score: 100 },
+        { name: "market-volatility", issues: 0, checks: 6, score: 98 },
+        { name: "safety-assessment", issues: 12, checks: 96, score: 98 },
+      ],
+    });
+  }, []);
 
   return (
     <Card className="modal-container p-4">
@@ -34,9 +40,11 @@ function ModalContainer() {
       <Container>
         <Row>
           <Col className="p-0 radar-col">
-            <RadarGraph
-              data={data.primitives.map((property) => property.score)}
-            />
+            {data.primitives.length && (
+              <RadarGraph
+                data={data.primitives.map((property) => property.score)}
+              />
+            )}
           </Col>
           <Col
             className={`d-flex flex-column justify-content-between guage-col ${
@@ -44,7 +52,7 @@ function ModalContainer() {
             }`}
           >
             {data.primitives.map((property, i) => (
-              <GuageCard title={TITLES[i]} data={property} key={i} />
+              <GuageCard title={TITLES[i]} data={property} key={`guage-${i}`} />
             ))}
           </Col>
         </Row>
