@@ -23,8 +23,6 @@ class RadarGraph extends Component {
           const angle = (2 * Math.PI) / config.data.labels.length;
           // draws the regular polygon, creates shadow, and fills it with backgroundColor (white)
           for (var i = 1; i <= config.data.labels.length; i++) {
-            ctx.shadowColor = config.options.chartArea.shadowColor;
-            ctx.shadowBlur = config.options.chartArea.shadowBlur;
             ctx.lineTo(
               xCenter + radius * Math.cos((i - 0.5) * angle),
               yCenter + radius * Math.sin((i - 0.5) * angle)
@@ -48,7 +46,6 @@ class RadarGraph extends Component {
             if (Math.sin((i + 3.5) * angle) < 0) {
               yadd -= 100;
             }
-
             ctx.font = "14px Arial";
             ctx.fillStyle = "#333333";
             //title label in bold
@@ -64,6 +61,8 @@ class RadarGraph extends Component {
             }
           }
 
+          ctx.shadowColor = config.options.chartArea.shadowColor;
+          ctx.shadowBlur = config.options.chartArea.shadowBlur;
           ctx.closePath();
           ctx.fillStyle = config.options.chartArea.backgroundColor;
           ctx.fill();
