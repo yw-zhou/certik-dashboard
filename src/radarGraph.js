@@ -8,8 +8,11 @@ class RadarGraph extends Component {
 
   componentDidMount() {
     Chart.pluginService.register({
+      // add listener to draw custom UI onto canvas before Chart
       beforeDraw: (chart) => {
         const { ctx, scale, config } = chart;
+        // check that the custom option exists to make it portable and also
+        //prevent other charts from having the same effect
         if (
           config.type === "radar" &&
           config.options.chartArea.backgroundColor
@@ -18,6 +21,7 @@ class RadarGraph extends Component {
           ctx.save();
           ctx.beginPath();
           const angle = (2 * Math.PI) / config.data.labels.length;
+          // draws the regular polygon, creates shadow, and fills it with backgroundColor (white)
           for (var i = 1; i <= config.data.labels.length; i++) {
             ctx.shadowColor = config.options.chartArea.shadowColor;
             ctx.shadowBlur = config.options.chartArea.shadowBlur;
@@ -25,6 +29,11 @@ class RadarGraph extends Component {
               xCenter + radius * Math.cos((i - 0.5) * angle),
               yCenter + radius * Math.sin((i - 0.5) * angle)
             );
+
+            // manually drawing the labels below. Generally ChartJS supports labels however it can not
+            // support styling partial labels (such as making main label bold with normal sublabels)
+            // if the design decision is to forego the bolding to trade for flexibility
+            // please refer to commit 379712b1b5c084f1dece6cc2acb8768f5ee30680
             let xadd = 5 + radius * Math.cos((i + 3.5) * angle);
             let yadd = 20 + radius * Math.sin((i + 3.5) * angle);
 
@@ -60,7 +69,8 @@ class RadarGraph extends Component {
     });
 
     const myRadarChartRef = this.radarChartRef.current.getContext("2d");
-    myRadarChartRef.height = 800;
+    // The chart automatically fills the entire canvas size preventing drawing space
+    // for custom labels. The fillerLabel adjusts chart size for space.
     const fillerLabel = [
       ["", "", "", "", ""],
       ["", "", "", "", ""],
@@ -72,6 +82,7 @@ class RadarGraph extends Component {
     new Chart(myRadarChartRef, {
       type: "radar",
       data: {
+        // comment below is ChartJS's own label drawing which doesn't support partial styling
         // labels: TITLES.map((t, i) => this.formatNewlines(t, DESCRIPTIONS[i])),
         labels: fillerLabel,
         datasets: [
@@ -99,9 +110,8 @@ class RadarGraph extends Component {
           pointLabels: {
             fontSize: 14,
           },
-          maxHeight: 100,
-          maxWidth: 100,
         },
+        // custom option attributes for before draw listener above
         chartArea: {
           backgroundColor: "white",
           shadowColor: "#aaaaaa",
@@ -116,6 +126,7 @@ class RadarGraph extends Component {
     });
   }
 
+  // wraps long lines by turning them into array
   formatNewlines(content) {
     let line = "";
     let formatted = [];
@@ -137,12 +148,7 @@ class RadarGraph extends Component {
     return (
       <Card className="h-100 overflow-hidden d-flex flex-column align-items-center justify-content-center light-grey border-0">
         <div className="radar-wrapper ">
-          <canvas
-            id="mainChart"
-            ref={this.radarChartRef}
-            height="650"
-            width="1000"
-          />
+          <canvas ref={this.radarChartRef} height="650" width="1000" />
         </div>
       </Card>
     );

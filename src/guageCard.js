@@ -9,13 +9,15 @@ class GuageCard extends Component {
   chartRef = React.createRef();
 
   componentDidMount() {
-    // { name: "static-analysis", issues: 41, checks: 400, score: 90 },
+    // set status of attribute which maps to color from consts
     let status = "Average";
     if (this.props.data.score >= 90) {
       status = "Excellent";
     } else if (this.props.data.score > 70) {
       status = "Good";
     }
+
+    //set property description based on name
     let description;
     if (this.props.data.name === "static-analysis") {
       description = (
@@ -63,9 +65,11 @@ class GuageCard extends Component {
     this.setState({ description });
 
     const myChartRef = this.chartRef.current.getContext("2d");
+    //generate datapoints to simulate the 4 quarter sections in guage chart from UI
     let dataPoints = Array(parseInt(this.props.data.score / 25)).fill(25);
     dataPoints.push(100 - this.props.data.score);
 
+    //generate chart
     new Chart(myChartRef, {
       type: "doughnut",
       data: {
@@ -99,6 +103,7 @@ class GuageCard extends Component {
         </div>
         <div className="small-width ml-auto position-relative">
           <canvas id="sideGuage" ref={this.chartRef} />
+          {/* add score to center of guage chart */}
           <p className="fw-bold score">{this.props.data.score}</p>
         </div>
       </Card>

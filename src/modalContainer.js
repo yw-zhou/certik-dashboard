@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import { useState, useEffect } from "react";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
@@ -8,8 +7,10 @@ import RadarGraph from "./radarGraph";
 import GuageCard from "./guageCard";
 import { TITLES } from "./consts";
 import logo from "./dyp-logo.png";
+import "./modalContainer.css";
 
 function ModalContainer() {
+  //react hook to support resizing changes
   let windowSize = useWindowSize();
 
   //typically would be requesting for data here
@@ -70,7 +71,6 @@ function useWindowSize() {
     handleResize();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  console.log(windowSize);
   return windowSize;
 }
 
