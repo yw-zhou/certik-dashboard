@@ -16,15 +16,39 @@ class RadarGraph extends Component {
         ) {
           const { xCenter, yCenter, drawingArea: radius } = scale;
           ctx.save();
-          ctx.shadowColor = config.options.chartArea.shadowColor;
-          ctx.shadowBlur = config.options.chartArea.shadowBlur;
           ctx.beginPath();
           const angle = (2 * Math.PI) / config.data.labels.length;
           for (var i = 1; i <= config.data.labels.length; i++) {
+            ctx.shadowColor = config.options.chartArea.shadowColor;
+            ctx.shadowBlur = config.options.chartArea.shadowBlur;
             ctx.lineTo(
-              xCenter + radius * Math.cos((i + 0.5) * angle),
-              yCenter + radius * Math.sin((i + 0.5) * angle)
+              xCenter + radius * Math.cos((i - 0.5) * angle),
+              yCenter + radius * Math.sin((i - 0.5) * angle)
             );
+            let xadd = 10 + radius * Math.cos((i + 3.5) * angle);
+            let yadd = 20 + radius * Math.sin((i + 3.5) * angle);
+
+            if (Math.abs(Math.cos((i + 3.5) * angle)).toFixed(2) === "0.00") {
+              xadd -= 50;
+            } else if (Math.cos((i + 3.5) * angle) < 0) {
+              xadd -= 120;
+            }
+
+            if (Math.sin((i + 3.5) * angle) < 0) {
+              yadd -= 100;
+            }
+
+            ctx.font = "14px Arial";
+            ctx.fillStyle = "#333333";
+
+            ctx.fillText(TITLES[i - 1], xCenter + xadd, yCenter + yadd);
+            ctx.font = "12px Arial";
+            ctx.fillStyle = "#999999";
+            const descriptLines = this.formatNewlines(DESCRIPTIONS[i - 1]);
+            for (const line in descriptLines) {
+              yadd += 20;
+              ctx.fillText(descriptLines[line], xCenter + xadd, yCenter + yadd);
+            }
           }
 
           ctx.closePath();
@@ -37,11 +61,19 @@ class RadarGraph extends Component {
 
     const myRadarChartRef = this.radarChartRef.current.getContext("2d");
     myRadarChartRef.height = 800;
+    const fillerLabel = [
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+      ["", "", "", "", ""],
+    ];
     new Chart(myRadarChartRef, {
       type: "radar",
       data: {
-        labels: TITLES.map((t, i) => this.formatNewlines(t, DESCRIPTIONS[i])),
-        // labels: ["", "", "", "", "", ""],
+        // labels: TITLES.map((t, i) => this.formatNewlines(t, DESCRIPTIONS[i])),
+        labels: fillerLabel,
         datasets: [
           {
             data: this.props.data,
@@ -55,7 +87,6 @@ class RadarGraph extends Component {
         ],
       },
       options: {
-        // maintainAspectRatio: false,
         legend: {
           display: false,
         },
@@ -72,8 +103,6 @@ class RadarGraph extends Component {
           maxWidth: 100,
         },
         chartArea: {
-          maintainAspectRatio: false,
-          responsive: true,
           backgroundColor: "white",
           shadowColor: "#aaaaaa",
           shadowBlur: 10,
@@ -85,12 +114,11 @@ class RadarGraph extends Component {
         },
       },
     });
-    // radarChart.resize(1200, 1200);
   }
 
-  formatNewlines(title, content) {
+  formatNewlines(content) {
     let line = "";
-    let formatted = [title];
+    let formatted = [];
     for (var i = 0; i < content.length; i++) {
       line += content[i];
       if (
@@ -112,8 +140,8 @@ class RadarGraph extends Component {
           <canvas
             id="mainChart"
             ref={this.radarChartRef}
-            height="200"
-            // width="200"
+            height="650"
+            width="1000"
           />
         </div>
       </Card>

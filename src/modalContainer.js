@@ -17,10 +17,10 @@ class ModalContainer extends Component {
       primitives: [
         { name: "static-analysis", issues: 41, checks: 400, score: 80 },
         { name: "onchain-monitoring", issues: 0, checks: 9, score: 60 },
-        { name: "social-sentiment", issues: 6, checks: 6, score: 90 },
-        { name: "governance-autonomy", issues: 0, checks: 60, score: 100 },
-        { name: "market-volatility", issues: 0, checks: 6, score: 80 },
-        { name: "safety-assessment", issues: 12, checks: 96, score: 93 },
+        { name: "social-sentiment", issues: 6, checks: 6, score: 80 },
+        { name: "governance-autonomy", issues: 1, checks: 0, score: 100 },
+        { name: "market-volatility", issues: 0, checks: 6, score: 98 },
+        { name: "safety-assessment", issues: 12, checks: 96, score: 98 },
       ],
     };
 

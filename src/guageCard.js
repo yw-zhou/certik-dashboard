@@ -49,7 +49,7 @@ class GuageCard extends Component {
           " based on social monitoring and sentiment analysis",
         "market-volatility":
           " based on indicators over trading volume/liquidity/depth",
-        "risk-assessment": `based on ${this.props.data.checks} safety and hazard evaluations`,
+        "safety-assessment": ` based on ${this.props.data.checks} safety and hazard evaluations`,
       };
       description = (
         <p>
