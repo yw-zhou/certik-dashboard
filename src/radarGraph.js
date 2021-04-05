@@ -25,11 +25,11 @@ class RadarGraph extends Component {
               xCenter + radius * Math.cos((i - 0.5) * angle),
               yCenter + radius * Math.sin((i - 0.5) * angle)
             );
-            let xadd = 10 + radius * Math.cos((i + 3.5) * angle);
+            let xadd = 5 + radius * Math.cos((i + 3.5) * angle);
             let yadd = 20 + radius * Math.sin((i + 3.5) * angle);
 
             if (Math.abs(Math.cos((i + 3.5) * angle)).toFixed(2) === "0.00") {
-              xadd -= 50;
+              xadd -= 60;
             } else if (Math.cos((i + 3.5) * angle) < 0) {
               xadd -= 120;
             }

@@ -9,8 +9,13 @@
 }
 
 .modal-container {
-  width: 1200px;
-  height: 600px;
+  max-width: 1200px;
+  min-width: 620px;
+  width: 80%;
+}
+
+.radar-col {
+  min-width: 550px;
 }
 
 .radar-wrapper {
@@ -22,12 +27,13 @@
 }
 
 p {
-  font-size: 14px;
+  font-size: 13px;
   margin-bottom: 0px;
 }
 
 .small-width {
   width: 100px;
+  height: 65px;
 }
 
 .fw-bold {
@@ -44,4 +50,9 @@ p {
 .logo {
   width: 40px;
   height: 30px;
+}
+
+.guage-col {
+  min-height: 500px;
+  min-width: 320px;
 }
