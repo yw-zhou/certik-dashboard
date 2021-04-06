@@ -1,6 +1,6 @@
 .modal-container {
   max-width: 1200px;
-  min-width: 620px;
+  min-width: 620px !important;
   width: 80%;
 }
 
